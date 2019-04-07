@@ -15,17 +15,18 @@ class LZ77Compressor:
 		while i < len(s):
 			matching_sfx = [(0,0,s[i])]
 			
-			for j in range(max(0, i-self.w_size), i):
-				if s[i] == s[j]:
-					l = i+1
-					k = j+1
-					
-					while l < len(s) and s[l] == s[k]:
-						l += 1
-						k += 1
+			if i != len(s)-1:			
+				for j in range(max(0, i-self.w_size), i):
+					if s[i] == s[j]:
+						l = i+1
+						k = j+1
 						
-					matching_sfx += [(i-j, k-j, s[l])]
-				
+						while l < len(s)-1 and s[l] == s[k]:
+							l += 1
+							k += 1
+							
+						matching_sfx += [(i-j, k-j, s[l])]
+					
 				
 			encoded += [ max(matching_sfx, key=self.matching_key)]
 			i += encoded[-1][1] + 1
